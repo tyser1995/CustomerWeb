@@ -1,0 +1,114 @@
+﻿@model CustomerWeb.Models.Customer
+
+@{
+    ViewData["Title"] = "Add Customer";
+}
+
+<h2>Add Customer</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Birthdate"></label>
+        <input asp-for="Birthdate" type="date" class="form-control" />
+        <span asp-validation-for="Birthdate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender"></label>
+        <select asp-for="Gender" class="form-control">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+
+    <h4>Contact Numbers</h4>
+    <div id="contact-numbers-container">
+        <div class="form-group">
+            <label>Type</label>
+            <input name="ContactNumbers[0].Type" class="form-control" required />
+            <label>Number</label>
+            <input name="ContactNumbers[0].Number" class="form-control" type="tel" required />
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <button type="button" id="add-contact-number" class="btn btn-secondary mt-2 mb-4">Add Another Contact Number</button>
+
+    <h4>Addresses</h4>
+    <div id="addresses-container">
+        <div class="form-group">
+            <label>Barangay</label>
+            <input name="Addresses[0].Barangay" class="form-control" required />
+            <label>City</label>
+            <input name="Addresses[0].City" class="form-control" required />
+            <label>Province</label>
+            <input name="Addresses[0].Province" class="form-control" required />
+            <span class="text-danger"></span>
+        </div>
+    </div>
+    <button type="button" id="add-address" class="btn btn-secondary mt-2 mb-4">Add Another Address</button>
+    <br />
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+</form>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        let contactNumberIndex = 1;
+        let addressIndex = 1;
+
+        // Add contact number fields
+        document.getElementById('add-contact-number').addEventListener('click', function () {
+            const container = document.getElementById('contact-numbers-container');
+            const fieldGroup = document.createElement('div');
+            fieldGroup.className = 'form-group';
+            fieldGroup.innerHTML = `
+                        <label>Type</label>
+                        <input name="ContactNumbers[${contactNumberIndex}].Type" class="form-control" required />
+                        <label>Number</label>
+                        <input name="ContactNumbers[${contactNumberIndex}].Number" class="form-control" type="tel" required />
+                        <button type="button" class="btn btn-danger remove-contact-number mt-2">Remove</button>
+                    `;
+            container.appendChild(fieldGroup);
+            contactNumberIndex++;
+        });
+
+        // Add address fields
+        document.getElementById('add-address').addEventListener('click', function () {
+            const container = document.getElementById('addresses-container');
+            const fieldGroup = document.createElement('div');
+            fieldGroup.className = 'form-group';
+            fieldGroup.innerHTML = `
+                        <label>Barangay</label>
+                        <input name="Addresses[${addressIndex}].Barangay" class="form-control" required />
+                        <label>City</label>
+                        <input name="Addresses[${addressIndex}].City" class="form-control" required />
+                        <label>Province</label>
+                        <input name="Addresses[${addressIndex}].Province" class="form-control" required />
+                        <button type="button" class="btn btn-danger remove-address mt-2">Remove</button>
+                    `;
+            container.appendChild(fieldGroup);
+            addressIndex++;
+        });
+
+        // Remove contact number field
+        document.getElementById('contact-numbers-container').addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-contact-number')) {
+                event.target.parentElement.remove();
+            }
+        });
+
+        // Remove address field
+        document.getElementById('addresses-container').addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-address')) {
+                event.target.parentElement.remove();
+            }
+        });
+    </script>
+}

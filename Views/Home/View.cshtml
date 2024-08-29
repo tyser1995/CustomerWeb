@@ -1,0 +1,40 @@
+﻿@model CustomerWeb.Models.Customer
+
+@{
+    ViewData["Title"] = "View Customer";
+}
+
+<h2>View Customer</h2>
+
+<div>
+    <h4>Customer Details</h4>
+    <dl class="row">
+        <dt class="col-sm-2">Full Name</dt>
+        <dd class="col-sm-10">@Model.FullName</dd>
+        <dt class="col-sm-2">Birthdate</dt>
+        <dd class="col-sm-10">@Model.Birthdate.ToString("yyyy-MM-dd")</dd>
+        <dt class="col-sm-2">Gender</dt>
+        <dd class="col-sm-10">@Model.Gender</dd>
+    </dl>
+
+    <h4>Contact Numbers</h4>
+    <ul>
+        @foreach (var contact in Model.ContactNumbers)
+        {
+            <li>@contact.Type: @contact.Number</li>
+        }
+    </ul>
+
+    <h4>Addresses</h4>
+    <ul>
+        @foreach (var address in Model.Addresses)
+        {
+            <li>
+                Barangay: @address.Barangay, City: @address.City, Province: @address.Province
+            </li>
+        }
+    </ul>
+
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
